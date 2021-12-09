@@ -1,7 +1,11 @@
 from funcs import *
 import time
 
-num = read_seq_num()
+
+seq_number1 = 4834000000 #2020-12-15 23:03:52
+# seq_number2 = 5046355000 # 2021-06-03 23:07:10
+
+num = read_cur_seq_num()
 wait = 1.5
 rest = 10
 max_fail = 10
@@ -17,7 +21,7 @@ while True:
                 time.sleep(wait)
                 fail = 0
         except:
-            save_seq_num(num+100)
+            save_cur_seq_num(num+100)
             fail += 1
         
         if fail < max_fail:
