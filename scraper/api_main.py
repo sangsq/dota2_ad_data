@@ -17,7 +17,7 @@ while True:
             while True:
                 s = fetch_ad_games_by_sequence_number(num)
                 print(s)
-                num -= 100
+                num += 100
                 time.sleep(wait)
                 fail = 0
         except:

@@ -1,15 +1,14 @@
 import numpy as np
 
-
-
 # from numpy.core.defchararray import endswith
 import pandas as pd
 import os
-import json
+import json 
 from collections import defaultdict
 from const import *
 
 abnormal_abs = defaultdict(lambda: 0)
+non_ult_abs = set()
 
 def ab_is_bonus(ab_id, id2ab):
     id = str(ab_id)
@@ -29,8 +28,12 @@ def correct_id(ab_id):
 def get_abs(player):
     if player.get('ability_upgrades') is None:
         return []
+    
+    id_seq = [a['ability'] for a in player['ability_upgrades']]
+    # for i in range(3):
+    #     non_ult_abs.add(int(id_seq[i]))
 
-    all_ids = set([a['ability'] for a in player['ability_upgrades']])
+    all_ids = set(id_seq)
     ab_ids = [correct_id(a) for a in all_ids if not ab_is_bonus(a, id2ab)]
     ab_ids = list(set(ab_ids))
 
@@ -70,7 +73,7 @@ def summary_match_ids_to_file(games_folder, out_folder="./"):
 
 
 
-def summary_games_to_csv(games_folder, out_folder="./", max_file=1000):
+def summary_games_to_csv(games_folder, out_folder="./data/", max_file=1000):
     filename_list = os.listdir(games_folder)
     n_file = min(len(filename_list), max_file)
     
@@ -118,5 +121,5 @@ def summary_games_to_csv(games_folder, out_folder="./", max_file=1000):
     df = pd.DataFrame.from_dict(d)
     df.to_csv(out_folder + "games.csv")
 
-summary_games_to_csv("D:\\tmp\\504[2891525-6355145]\\games\\", max_file=100000)
-# summary_games_to_csv("D:\\tmp\\50[29500702-45666065]\\games\\", max_file=1000000)
+summary_games_to_csv("D:\\tmp\\504[2891525-6355145]\\games\\", max_file=10000)
+# summary_games_to_csv("D:\\tmp\\50[29500702-45666065]\\", max_file=1000000)
