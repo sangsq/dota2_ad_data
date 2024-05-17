@@ -10,7 +10,12 @@ from const import *
 abnormal_abs = defaultdict(lambda: 0)
 non_ult_abs = set()
 
+
+
 def ab_is_bonus(ab_id, id2ab):
+    """
+    Check if the ability is a bonus ability
+    """
     id = str(ab_id)
     if id2ab.get(id) is None or id2ab[id][0:7] == 'special' or id2ab[id][0:10] == 'ad_special':
         return True
@@ -18,6 +23,10 @@ def ab_is_bonus(ab_id, id2ab):
         return False
 
 def correct_id(ab_id):
+    """
+    Recast the ability id. There are abilities with multiple ids, this function recasts them to a single id.
+    See ab_id_recast in const.py for the recastings.
+    """
     tmp = ab_id_recast.get(ab_id)
     if tmp is None:
         return ab_id
@@ -57,9 +66,13 @@ def has_abandon(game):
             return True
     return False
 
-def summary_match_ids_to_file(games_folder, out_folder="./"):
+def summarize_match_ids_to_file(games_folder, out_folder="./"):
+    """
+    Summarize match ids of json files in the games_folder to a file in out_folder
+    """
     filename_list = os.listdir(games_folder)
     n_file = len(filename_list)
+    print("Summarizing a total of ", n_file, " files...")
     out_file_name = "match_ids"
     match_ids = np.zeros((n_file,), dtype=np.uint64)
     for i, name in enumerate(filename_list):
@@ -69,11 +82,15 @@ def summary_match_ids_to_file(games_folder, out_folder="./"):
         if i % 10000 == 0:
             print(f"{i}")
     filename = out_folder + out_file_name
-    match_ids.tofile(filename)
+    # match_ids.tofile(filename)
+    np.savetxt(filename, match_ids, fmt='%d')
 
 
 
-def summary_games_to_csv(games_folder, out_folder="./data/", max_file=1000):
+def summarize_games_to_csv(games_folder, out_folder="./data/", max_file=1000):
+    """
+    Summarize json files in the games_folder to a csv file in out_folder
+    """
     filename_list = os.listdir(games_folder)
     n_file = min(len(filename_list), max_file)
     
@@ -121,5 +138,10 @@ def summary_games_to_csv(games_folder, out_folder="./data/", max_file=1000):
     df = pd.DataFrame.from_dict(d)
     df.to_csv(out_folder + "games.csv")
 
-summary_games_to_csv("D:\\tmp\\504[2891525-6355145]\\games\\", max_file=10000)
-# summary_games_to_csv("D:\\tmp\\50[29500702-45666065]\\", max_file=1000000)
+
+
+# game_folder = "D:\\tmp\\50[29500702-45666065]\\games\\"
+# game_folder = "D:\\tmp\\50[29500702-45666065]\\"
+summarize_games_to_csv(game_folder, max_file=1000000)
+summarize_match_ids_to_file(game_folder, out_folder="./")
+
