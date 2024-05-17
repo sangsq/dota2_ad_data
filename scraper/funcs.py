@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 KEY = r"F5F683EB356F24EE2AAC4CB527064B1E"
-PATH = r'./games/'
+PATH = r'./saved_games/'
 site = r"http://api.steampowered.com/IDOTA2Match_570/GetMatchHistoryBySequenceNum/v1"
 
 MAX_TRY = 2
